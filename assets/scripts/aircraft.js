@@ -1358,7 +1358,7 @@ var Aircraft=Fiber.extend(function() {
 
       // Initial Runway Assignment
       if (options.category == "arrival") this.setArrivalRunway(airport_get().runway);
-      else if (options.category == "departure") this.setDepartureRunway(airport_get().runway);
+      else if (options.category == "departure") this.setDepartureRunway(prop.game.rwy_option.get('takeOffRwy'));
       this.takeoffTime = (options.category == "arrival") ? game_time() : null;
 
       this.parse(options);
@@ -1981,7 +1981,7 @@ var Aircraft=Fiber.extend(function() {
       if(!apt.sids.hasOwnProperty(sid_id)) {
         return ["fail", "SID name not understood"];
       }
-      if(!this.rwy_dep) this.setDepartureRunway(airport_get().runway);
+      if(!this.rwy_dep) this.setDepartureRunway(prop.game.rwy_option.get('takeOffRwy'));
       if(!apt.sids[sid_id].rwy.hasOwnProperty(this.rwy_dep)) {
         return ['fail', "unable, the "+sid_name+" departure not valid from Runway "+this.rwy_dep];
       }
@@ -2206,7 +2206,7 @@ var Aircraft=Fiber.extend(function() {
       else if(this.category == "departure" && this.isLanded()) {
         this.speed = 0;
         this.mode = "apron";
-        this.setDepartureRunway(airport_get().runway);
+        this.setDepartureRunway(prop.game.rwy_option.get('takeOffRwy'));
         this.destination = data.destination;
       }
 

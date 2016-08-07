@@ -104,6 +104,42 @@ function ui_init() {
   $("#toggle-options").click(function() {
     ui_options_toggle();
   });
+  
+  var rwy_options = $("<div id='rwy-options-dialog' class='dialog'></div>");
+  var rwy_descriptions = prop.game.rwy_option.getDescriptions();
+  for (var key in rwy_descriptions) {
+    var opt = rwy_descriptions[key];
+    if (opt.type == 'select') {
+      var container = $('<div class="option"></div>');
+      container.append("<span class='option-description'>" +
+                     opt.description + "</span>");
+      var sel_span = $("<span class='option-selector option-type-select'></span>");
+      var selector = $("<select id='opt-" + opt.name +
+                       "' name='" + opt.name + "'></select>");
+      selector.data('name', opt.name);
+      var current = prop.game.rwy_option.get(opt.name);
+      for (var i=0;i<opt.data.length;i++) {
+        var s = "<option value='"+opt.data[i][1];
+        if (opt.data[i][1] == current)
+          s += "' selected='selected";
+        s += "'>"+opt.data[i][0]+"</option>";
+        selector.append(s);
+      }
+      selector.change(function() {
+        prop.game.rwy_option.set($(this).data('name'), $(this).val());
+      });
+      sel_span.append(selector);
+      container.append(sel_span);
+      rwy_options.append(container);
+    }
+  }
+
+  $("body").append(rwy_options);
+
+  $("#toggle-rwy").click(function() {
+    ui_rwy_options_toggle();
+  });
+  
 }
 
 function ui_complete() {
@@ -239,5 +275,17 @@ function ui_options_toggle() {
   else {
     $("#options-dialog").addClass("open");
     $("#options-dialog").addClass("active");
+  }
+}
+
+function ui_rwy_options_toggle() {
+  if ($("#rwy-options-dialog").hasClass("open")) {
+    $("#rwy-options-dialog").removeClass("open");
+    $("#rwy-options-dialog").removeClass("active");
+    airport_rwy_reconfigure();
+  }
+  else {
+    $("#rwy-options-dialog").addClass("open");
+    $("#rwy-options-dialog").addClass("active");
   }
 }

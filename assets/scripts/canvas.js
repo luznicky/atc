@@ -237,7 +237,7 @@ function canvas_draw_fixes(cc) {
   cc.lineJoin    = "round";
   cc.font = "10px monoOne, monospace";
   var airport=airport_get();
-  for(var i in airport.real_fixes) {
+  for(var i in airport.printable_fixes) {
     cc.save();
     cc.translate(round(km_to_px(airport.fixes[i][0])) + prop.canvas.panX, -round(km_to_px(airport.fixes[i][1])) + prop.canvas.panY);
 

@@ -63,6 +63,52 @@ zlsa.atc.Options = Fiber.extend(function (base) {
   };
 });
 
+zlsa.atc.RwyOptions = Fiber.extend(function (base) {
+  return {
+    init: function () {
+      this._options = {};
+      this.addOption({
+        name: 'landingRwy',
+        defaultValue: '06',
+        description: 'Runway in use for landings',
+        type: 'select',
+        data: [['06', '06'],
+               ['24', '24'],
+	       ['12', '12'],
+	       ['30', '30']]
+      });
+      this.addOption({
+        name: 'takeOffRwy',
+        defaultValue: '06',
+        description: 'Runway in use for take-offs',
+        type: 'select',
+        data: [['06', '06'],
+               ['24', '24'],
+               ['12', '12'],
+	       ['30', '30']]
+      });
+    },
+    addOption: function(data) {
+      this._options[data.name] = data;
+      if ('zlsa.atc.rwy_option.'+data.name in localStorage)
+        this[data.name] = localStorage['zlsa.atc.rwy_option.'+data.name];
+      else
+        this[data.name] = data.defaultValue;
+    },
+    getDescriptions: function() {
+      return this._options;
+    },
+    get: function(name) {
+      return this[name];
+    },
+    set: function(name, value) {
+      localStorage['zlsa.atc.rwy_option.'+name] = value;
+      this[name] = value;
+      return value;
+    },
+  };
+});
+
 function game_init_pre() {
   prop.game={};
 
@@ -110,6 +156,7 @@ function game_init_pre() {
   };
 
   prop.game.option = new zlsa.atc.Options();
+  prop.game.rwy_option = new zlsa.atc.RwyOptions();
 }
 
 function game_get_score() {

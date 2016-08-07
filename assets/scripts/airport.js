@@ -89,7 +89,7 @@ zlsa.atc.ArrivalBase = Fiber.extend(function(base) {
         var heading = vradial(vsub(airport_get().getFix(this.fixes[1].fix), position));
       }
       else if(this.route) { // STAR data is present
-        var star = airport_get().getSTAR(this.route.split('.')[1],this.route.split('.')[0],airport_get().runway);
+        var star = airport_get().getSTAR(this.route.split('.')[1],this.route.split('.')[0],prop.game.rwy_option.get('landingRwy'));
         var position = airport_get().getFix(star[0][0]);
         var heading = vradial(vsub(airport_get().getFix(star[1][0]), position));
       }
@@ -631,6 +631,7 @@ var Airport=Fiber.extend(function() {
       this.runway   = null;
       this.fixes    = {};
       this.real_fixes = {};
+      this.printable_fixes = {};
       this.sids     = {};
       this.stars    = {};
       this.maps     = {};
@@ -809,6 +810,7 @@ var Airport=Fiber.extend(function() {
         }
       }
 
+      this.fillPrintableFixes();
       this.checkFixes();  // verify we know where all the fixes are
 
 
@@ -841,6 +843,13 @@ var Airport=Fiber.extend(function() {
         }
       }
     },
+    
+    rwy_reconfigure: function() {
+      log(this.icao + " Runway reconfiguration");
+      this.printable_fixes = {};
+      this.fillPrintableFixes();
+    },
+    
     set: function() {
       if (!this.loaded) {
         this.load();
@@ -1113,6 +1122,106 @@ var Airport=Fiber.extend(function() {
       }
       return null;
     },
+    
+    
+    /** Add fixes relevant for selected airport configuration
+     */
+    fillPrintableFixes: function() {
+      var fixes = [];
+      var takeoff_rwy = prop.game.rwy_option.get('takeOffRwy');
+      var landing_rwy = prop.game.rwy_option.get('landingRwy');
+      
+      console.log(this.icao + ": RWY" + takeoff_rwy + " in use for take-offs.");
+      console.log(this.icao + ": RWY" + takeoff_rwy + " in use for landings.");
+
+      // Gather fixes used by SIDs
+      if(this.hasOwnProperty("sids")) {
+        for(var s in this.sids) {
+          if(this.sids[s].hasOwnProperty("rwy")) {  // runway portion
+            var r = takeoff_rwy;
+            for(var i in this.sids[s].rwy[r]) {
+              if(typeof this.sids[s].rwy[r][i] == "string")
+                fixes.push(this.sids[s].rwy[r][i]);
+              else fixes.push(this.sids[s].rwy[r][i][0]);
+            }
+          }
+          if(this.sids[s].hasOwnProperty("body")) { // body portion
+            for(var i in this.sids[s].body) {
+              if(typeof this.sids[s].body[i] == "string")
+                fixes.push(this.sids[s].body[i]);
+              else fixes.push(this.sids[s].body[i][0]);
+            }
+          }
+          if(this.sids[s].hasOwnProperty("transitions")) { // transitions portion
+            for(var t in this.sids[s].transitions)
+              for(var i in this.sids[s].transitions[t]) {
+                if(typeof this.sids[s].transitions[t][i] == "string")
+                  fixes.push(this.sids[s].transitions[t][i]);
+                else fixes.push(this.sids[s].transitions[t][i][0]);
+              }
+          }
+          if(this.sids[s].hasOwnProperty("draw")) { // draw portion
+	    for(var j in this.sids[s].draw[takeoff_rwy])
+              fixes.push(this.sids[s].draw[takeoff_rwy][j].replace('*',''));
+          }
+        }
+      }
+
+      // Gather fixes used by STARs
+      if(this.hasOwnProperty("stars")) {
+        for(var s in this.stars) {
+          if(this.stars[s].hasOwnProperty("transitions")) { // transitions portion
+            for(var t in this.stars[s].transitions)
+              for(var i in this.stars[s].transitions[t]) {
+                if(typeof this.stars[s].transitions[t][i] == "string")
+                  fixes.push(this.stars[s].transitions[t][i]);
+                else fixes.push(this.stars[s].transitions[t][i][0]);
+              }
+          }
+          if(this.stars[s].hasOwnProperty("body")) { // body portion
+            for(var i in this.stars[s].body) {
+              if(typeof this.stars[s].body[i] == "string")
+                fixes.push(this.stars[s].body[i]);
+              else fixes.push(this.stars[s].body[i][0]);
+            }
+          }
+          if(this.stars[s].hasOwnProperty("rwy")) {  // runway portion
+            var r = landing_rwy;
+            for(var i in this.stars[s].rwy[r]) {
+              if(typeof this.stars[s].rwy[r][i] == "string")
+                fixes.push(this.stars[s].rwy[r][i]);
+              else fixes.push(this.stars[s].rwy[r][i][0]);
+            }
+          }
+          if(this.stars[s].hasOwnProperty("draw")) { // draw portion
+            for(var i in this.stars[s].draw)
+              for(var j in this.stars[s].draw[i])
+                fixes.push(this.stars[s].draw[i][j].replace('*',''));
+          }
+        }
+      }
+
+      // Gather fixes used by airways
+      if(this.hasOwnProperty("airways")) {
+        for(var a in this.airways)
+          for(var i in this.airways[a])
+            fixes.push(this.airways[a][i]);
+      
+      }
+      
+      for(var i=0; i<fixes.length; i++)
+      {
+	var name = fixes[i],
+	coord = new Position(this.fixes[i],
+                                   this.position,
+                                   this.magnetic_north);;
+	this.printable_fixes[name] = coord.position;
+      }
+      
+      
+    },
+      
+    
     /** Verifies all fixes used in the airport also have defined positions
      */
     checkFixes: function() {
@@ -1192,6 +1301,8 @@ var Airport=Fiber.extend(function() {
           for(var i in this.airways[a])
             fixes.push(this.airways[a][i]);
       }
+      
+
 
       // Get (unique) list of fixes used that are not in 'this.fixes'
       var apt = this;
@@ -1284,6 +1395,11 @@ function airport_load(icao,level,name) {
 
 function airport_add(airport) {
   prop.airport.airports[airport.icao.toLowerCase()] = airport;
+}
+
+function airport_rwy_reconfigure()
+{
+  airport_get().rwy_reconfigure();
 }
 
 function airport_set(icao) {
