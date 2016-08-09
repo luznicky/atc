@@ -272,28 +272,27 @@ function canvas_draw_sids(cc) {
   for(var s in airport.sids) {
     var write_sid_name = true;
     if(airport.sids[s].hasOwnProperty("draw")) {
-      for(var i in airport.sids[s].draw) {
-        var fixList = airport.sids[s].draw[i];
-        var fx, fy, trxn_name = null;
-        for(var j=0; j<fixList.length; j++) {
-          if(fixList[j].indexOf("*") != -1) { // write transition name
-            trxn_name = fixList[j].replace("*","");
-            write_sid_name = false;
-          }
-          var fix = airport.getFix(fixList[j].replace("*",""));
-          if(!fix) log('Unable to draw line to "'+fixList[j]+'" because its position is not defined!', LOG_WARNING);
-          fx = km_to_px(fix[0]) + prop.canvas.panX;
-          fy = -km_to_px(fix[1]) + prop.canvas.panY;
-          if(j === 0) {
-            cc.beginPath();
-            cc.moveTo(fx, fy);
-          } else {
-            cc.lineTo(fx, fy);
-          }
+      var i = prop.game.rwy_option.get('takeOffRwy');
+      var fixList = airport.sids[s].draw[i];
+      var fx, fy, trxn_name = null;
+      for(var j=0; j<fixList.length; j++) {
+        if(fixList[j].indexOf("*") != -1) { // write transition name
+          trxn_name = fixList[j].replace("*","");
+          write_sid_name = false;
         }
-        cc.stroke();
-        if(trxn_name) cc.fillText(s + "." + trxn_name, fx+10, fy);
+        var fix = airport.getFix(fixList[j].replace("*",""));
+        if(!fix) log('Unable to draw line to "'+fixList[j]+'" because its position is not defined!', LOG_WARNING);
+        fx = km_to_px(fix[0]) + prop.canvas.panX;
+        fy = -km_to_px(fix[1]) + prop.canvas.panY;
+        if(j === 0) {
+          cc.beginPath();
+          cc.moveTo(fx, fy);
+        } else {
+          cc.lineTo(fx, fy);
+        }
       }
+      cc.stroke();
+      if(trxn_name) cc.fillText(s + "." + trxn_name, fx+10, fy);
       if(write_sid_name) cc.fillText(s, fx+10, fy);
     }
   }

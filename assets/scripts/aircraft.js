@@ -529,6 +529,8 @@ zlsa.atc.Leg = Fiber.extend(function(data, fms) {
         var rwy = fms.my_aircraft.rwy_arr;
         this.waypoints = [];
 
+	log("rwy_arr: " + rwy);
+	
         // Generate the waypoints
         var pairs = airport_get(apt).getSTAR(star, trn, rwy);
         for (var i=0; i<pairs.length; i++) { // for each fix/restr pair
@@ -2201,7 +2203,7 @@ var Aircraft=Fiber.extend(function() {
         if(data.waypoints.length > 0)
           this.setArrivalWaypoints(data.waypoints);
         this.destination = data.destination;
-        this.setArrivalRunway(airport_get(this.destination).runway);
+        this.setArrivalRunway(prop.game.rwy_option.get('landingRwy'));
       }
       else if(this.category == "departure" && this.isLanded()) {
         this.speed = 0;

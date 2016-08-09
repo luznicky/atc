@@ -1132,7 +1132,7 @@ var Airport=Fiber.extend(function() {
       var landing_rwy = prop.game.rwy_option.get('landingRwy');
       
       console.log(this.icao + ": RWY" + takeoff_rwy + " in use for take-offs.");
-      console.log(this.icao + ": RWY" + takeoff_rwy + " in use for landings.");
+      console.log(this.icao + ": RWY" + landing_rwy + " in use for landings.");
 
       // Gather fixes used by SIDs
       if(this.hasOwnProperty("sids")) {
