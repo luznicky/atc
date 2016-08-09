@@ -1,0 +1,19 @@
+{
+  "name": "Air Berlin",
+  "callsign": {
+    "name": "Air Berlin",
+    "length": 4,
+    "alpha": true
+  },
+  "fleets": {
+      "default": [
+            ["A319", 4],
+            ["A320", 42],
+            ["A321", 19],
+            ["B738", 25]
+            ],
+        "long": [
+            ["A332", 14]
+        ]
+    }
+}

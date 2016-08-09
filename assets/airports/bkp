@@ -1,0 +1,49 @@
+,
+      "DOBEN": {
+	"icao": "DOBEN",
+	"name": "Doben",
+	"suffix": {"24":"3A","30":"3B","06":"4E","12":"3H"},
+	"rwy": {
+	  "24" : ["PR402","DOBEN"],
+	  "30" : ["PR813","PR814","PR817","DOBEN"],
+	  "06" : ["PR631","PR632","ESINU","DOBEN"],
+	  "12" : ["PR626","PR856","UTORO","PR858","ESINU","DOBEN"]
+	},
+	"draw":[["PR402","DOBEN"],["PR813","PR814","PR817","DOBEN"],["PR631","PR632","ESINU","DOBEN"],["PR626","PR856","UTORO","PR858","ESINU","DOBEN"]]
+      },
+      "VENOX": {
+	"icao": "VENOX",
+	"name": "Venox",
+	"suffix": {"24":"2A","30":"2B","06":"2E","12":"2H"},
+	"rwy": {
+	  "24" : ["PR402","PR405","VENOX"],
+	  "30" : ["PR815","PR816","VENOX"],
+	  "06" : ["PR631","VENOX"],
+	  "12" : ["PR626","PR856","UTORO","PR858","VENOX"]
+	},
+	"draw":[["PR402","PR405","VENOX"],["PR815","PR816","VENOX"],["PR631","VENOX"],["PR626","PR856","UTORO","PR858","VENOX"]]
+      },
+      "ARTUP": {
+	"icao": "ARTUP",
+	"name": "Artup",
+	"suffix": {"24":"2A","30":"2B","06":"2E","12":"2H"},
+	"rwy": {
+	  "24" : ["PR402","PR405","PR406","BAGRU","PR409","ARTUP"],
+	  "30" : ["PR815","PR816","PR819","ARTUP"],
+	  "06" : ["PR634","ARTUP"],
+	  "12" : ["PR860","PR861","ARTUP"]
+	},
+	"draw":[["PR402","PR405","PR406","BAGRU","PR409","ARTUP"],["PR815","PR816","PR819","ARTUP"],["PR634","ARTUP"],["PR860","PR861","ARTUP"]]
+      },
+      "VOZ": {
+	"icao": "VOZ",
+	"name": "Vozice",
+	"suffix": {"24":"2A","30":"2B","06":"2E","12":"2H"},
+	"rwy": {
+	  "24" : ["PR402","PR403","PR404","VOZ"],
+	  "30" : ["PR813","PR814","PR403","PR404","VOZ"],
+	  "06" : ["PR633","PR635","VOZ"],
+	  "12" : ["PR626","VOZ"]
+	},
+	"draw":[["PR402","PR403","PR404","VOZ"],["PR813","PR814","PR403","PR404","VOZ"],["PR633","PR635","VOZ"],["PR626","VOZ"]]
+      }
