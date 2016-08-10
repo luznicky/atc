@@ -238,7 +238,7 @@
         "icao": "LOMKI",
         "name": "Lomki",
 	"transitions" :{
-	  "LOMKI091" : [["LOMKI091","A60+|S250-"]]
+	  "LOMKI" : [["LOMKI091","A60+|S250-"]]
 	},
 	"body": [["LOMKI","A55|S250"]],
         "suffix": {"24":"5S","30":"6R","06":"5T","12":"5P"},
@@ -253,7 +253,7 @@
         "icao": "GOSEK",
         "name": "Gosek",
 	"transitions" :{
-	  "GOSEK000" : [["GOSEK000","A55+|S250-"]]
+	  "GOSEK" : [["GOSEK000","A55+|S250-"]]
 	},
 	"body": [["GOSEK","A50|S250"]],
         "suffix": {"24":"3S","30":"4R","06":"3T","12":"3P"},
@@ -268,7 +268,7 @@
         "icao": "VLM",
         "name": "Vlasim",
 	"transitions" :{
-	  "VLM000" : [["VLM000","A55+|S250-"]]
+	  "VLM" : [["VLM000","A55+|S250-"]]
 	},
 	"body": [["VLM","A50|S250"]],
         "suffix": {"24":"3S","30":"2R","06":"2T","12":"2P"},
@@ -283,7 +283,7 @@
         "icao": "GOLOP",
         "name": "Golop",
 	"transitions" :{
-	  "GOLOP000" : [["GOLOP000","A55+|S250-"]]
+	  "GOLOP" : [["GOLOP000","A55+|S250-"]]
 	},
 	"body": [["GOLOP","A50|S250"]],
         "suffix": {"24":"2S","30":"3R","06":"2T","12":"2P"},
@@ -315,7 +315,7 @@
   "arrivals": [
       {
 	"type": "random",
-	"route": "LOMKI091.LOMKI.LKPR",
+	"route": "LOMKI.LOMKI.LKPR",
 	"frequency": 8,
 	"altitude": 12000,
 	"speed": 350,
@@ -334,7 +334,7 @@
       },
       {
 	"type": "random",
-	"route": "GOSEK000.GOSEK.LKPR",
+	"route": "GOSEK.GOSEK.LKPR",
 	"frequency": 7,
 	"altitude": 14000,
 	"speed": 350,
@@ -353,7 +353,7 @@
       },
       {
 	"type": "random",
-	"route": "VLM000.VLM.LKPR",
+	"route": "VLM.VLM.LKPR",
 	"frequency": 8,
 	"altitude": 12000,
 	"speed": 350,
@@ -372,7 +372,7 @@
       },
       {
 	"type": "random",
-	"route": "GOLOP000.GOLOP.LKPR",
+	"route": "GOLOP.GOLOP.LKPR",
 	"frequency": 7,
 	"altitude": 14000,
 	"speed": 350,
